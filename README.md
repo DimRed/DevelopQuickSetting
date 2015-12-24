@@ -1,6 +1,10 @@
 #DevelopQuickSetting
-
+***
+跟原版的区别
 ### 在原有的基础上新增了通知栏模式. 把开关放到了通知栏中.   
+**
+
+
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=me.yugy.github.developquicksetting)
 
