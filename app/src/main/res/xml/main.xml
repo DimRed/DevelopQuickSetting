@@ -30,6 +30,10 @@
             android:key="@string/key_adb_through_wifi"
             android:title="@string/adb_through_wifi"
             />
+        <CheckBoxPreference
+            android:key="@string/key_show_tool_on_status_bar"
+            android:title="@string/show_tool_on_status_bar"
+            />
 
     </PreferenceCategory>
 

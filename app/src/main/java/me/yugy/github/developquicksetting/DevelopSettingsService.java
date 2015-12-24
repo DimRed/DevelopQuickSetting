@@ -18,9 +18,14 @@ import java.io.IOException;
 
 public class DevelopSettingsService extends IntentService {
 
-    @IntDef({ACTION_SET_SHOW_LAYOUT_BORDER, ACTION_SET_DISPLAY_OVERDRAW,
+    @IntDef({
+            ACTION_SET_SHOW_LAYOUT_BORDER,
+            ACTION_SET_DISPLAY_OVERDRAW,
             ACTION_SET_PROFILE_GPU_RENDERING, ACTION_SET_IMMEDIATELY_DESTROY_ACTIVITIES,
-            ACTION_SET_ADB_THROUGH_WIFI})
+            ACTION_SET_ADB_THROUGH_WIFI
+//            ,ACTION_SHOW_TOOL_IN_SYSTEM_BAR
+             }
+    )
     public @interface Action {}
 
     public static final int ACTION_SET_SHOW_LAYOUT_BORDER = 1;
@@ -28,6 +33,7 @@ public class DevelopSettingsService extends IntentService {
     public static final int ACTION_SET_PROFILE_GPU_RENDERING = 3;
     public static final int ACTION_SET_IMMEDIATELY_DESTROY_ACTIVITIES = 4;
     public static final int ACTION_SET_ADB_THROUGH_WIFI = 5;
+//    public static final int ACTION_SHOW_TOOL_IN_SYSTEM_BAR = 6;
 
     public static void newTask(Context context, @Action int action) {
         context.startService(getIntent(context, action));
@@ -97,6 +103,8 @@ public class DevelopSettingsService extends IntentService {
                         notificationManager.cancel(Conf.NOTIFICATION_ID);
                     }
                     break;
+//                case ACTION_SHOW_TOOL_IN_SYSTEM_BAR:
+//                    break;
             }
         } catch (IOException | InterruptedException | NullPointerException e) {
             Crashlytics.logException(e);
@@ -117,6 +125,10 @@ public class DevelopSettingsService extends IntentService {
 
         //refresh activity state if exists.
         intent = new Intent(Conf.ACTION_REFRESH_UI);
+
+        if(DeveloperSettings.isShowOnStatusBar(this)){
+            DeveloperSettings.setShowOnStatusBar(this,true);
+        }
         intent.putExtra("result", success);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }

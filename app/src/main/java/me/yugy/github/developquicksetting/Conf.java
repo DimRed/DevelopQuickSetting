@@ -10,5 +10,6 @@ public class Conf {
     public static final String ACTION_REFRESH_UI = "ACTION_REFRESH_UI";
 
     public static final int NOTIFICATION_ID = 523483845;
+    public static final int TOOL_NOTIFICATION_ID = 33;
 
 }

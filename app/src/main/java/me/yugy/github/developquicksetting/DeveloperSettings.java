@@ -1,7 +1,10 @@
 package me.yugy.github.developquicksetting;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.SystemProperties;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -24,6 +27,35 @@ import eu.chainfire.libsuperuser.Shell;
 public class DeveloperSettings {
 
     private static final boolean LOG_ENABLED = false;
+
+
+    public static void setShowOnStatusBar(Context context, boolean show) {
+
+        if (show) {
+            new PostNotificationTask(context).execute();
+        } else {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(Conf.TOOL_NOTIFICATION_ID);
+        }
+
+
+    }
+
+    public static void setShowOnStatusBar(Context context) {
+
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        boolean show = prefs.getBoolean(context.getString(R.string.key_show_tool_on_status_bar), false);
+        setShowOnStatusBar(context, show);
+
+
+    }
+    public  static  boolean isShowOnStatusBar(Context context){
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+       return prefs.getBoolean(context.getString(R.string.key_show_tool_on_status_bar), false);
+    }
+
 
     public static boolean isAdbEnabled(Context context) {
         if (context == null) {

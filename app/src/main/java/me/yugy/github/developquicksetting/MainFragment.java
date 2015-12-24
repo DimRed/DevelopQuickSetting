@@ -26,6 +26,7 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
     private CheckBoxPreference mProfileGPURenderingPreference;
     private CheckBoxPreference mImmediatelyDestroyActivitiesPreference;
     private CheckBoxPreference mAdbThroughWifiPreference;
+    private CheckBoxPreference mShowToolInSystemBarPreference;
     private BroadcastReceiver mRefreshUIReceiver;
 
     @Override
@@ -74,6 +75,17 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         mProfileGPURenderingPreference = (CheckBoxPreference) findPreference(getString(R.string.key_profile_gpu_rendering));
         mImmediatelyDestroyActivitiesPreference = (CheckBoxPreference) findPreference(getString(R.string.key_always_destroy_activities));
         mAdbThroughWifiPreference = (CheckBoxPreference) findPreference(getString(R.string.key_adb_through_wifi));
+        mShowToolInSystemBarPreference = (CheckBoxPreference) findPreference(getString(R.string.key_show_tool_on_status_bar));
+
+
+        handShowOrDismissToolNotification(mShowToolInSystemBarPreference.isChecked());
+
+
+    }
+
+    private void handShowOrDismissToolNotification(boolean show) {
+        DeveloperSettings.setShowOnStatusBar(getActivity(),show);
+
     }
 
     private void setPreferencesVisibility() {
@@ -88,6 +100,7 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         mProfileGPURenderingPreference.setOnPreferenceChangeListener(null);
         mImmediatelyDestroyActivitiesPreference.setOnPreferenceChangeListener(null);
         mAdbThroughWifiPreference.setOnPreferenceChangeListener(null);
+        mShowToolInSystemBarPreference.setOnPreferenceChangeListener(null);
     }
 
     private void setPreferencesListener() {
@@ -96,6 +109,7 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         mProfileGPURenderingPreference.setOnPreferenceChangeListener(this);
         mImmediatelyDestroyActivitiesPreference.setOnPreferenceChangeListener(this);
         mAdbThroughWifiPreference.setOnPreferenceChangeListener(this);
+        mShowToolInSystemBarPreference.setOnPreferenceChangeListener(this);
     }
 
     public void updatePreferencesState() {
@@ -206,6 +220,9 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         } else if (preference.equals(mAdbThroughWifiPreference)) {
             //adb through wifi
             DevelopSettingsService.newTask(getActivity(), DevelopSettingsService.ACTION_SET_ADB_THROUGH_WIFI);
+        }else  if(preference.equals(mShowToolInSystemBarPreference)){
+            handShowOrDismissToolNotification((Boolean) newValue);
+            mShowToolInSystemBarPreference.setChecked((Boolean) newValue);
         }
         return false;
     }
