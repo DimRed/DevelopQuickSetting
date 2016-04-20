@@ -37,8 +37,6 @@ public class DeveloperSettings {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(Conf.TOOL_NOTIFICATION_ID);
         }
-
-
     }
 
     public static void setShowOnStatusBar(Context context) {
@@ -47,13 +45,11 @@ public class DeveloperSettings {
                 .getDefaultSharedPreferences(context);
         boolean show = prefs.getBoolean(context.getString(R.string.key_show_tool_on_status_bar), false);
         setShowOnStatusBar(context, show);
-
-
     }
     public  static  boolean isShowOnStatusBar(Context context){
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
-       return prefs.getBoolean(context.getString(R.string.key_show_tool_on_status_bar), false);
+        return prefs.getBoolean(context.getString(R.string.key_show_tool_on_status_bar), false);
     }
 
 
@@ -86,6 +82,14 @@ public class DeveloperSettings {
         }
         return Property.getDebugOverdrawPropertyEnabledValue().equals(result);
     }
+    public static boolean isLayoutUpdateEnabled() throws IOException {
+        long startTime = System.currentTimeMillis();
+        String result = SystemProperties.get(Property.getDebugLayoutUpdatePropertyKey(), "false");
+        if (LOG_ENABLED) {
+            Utils.log("isShowOverdrawEnabled spends " + (System.currentTimeMillis() - startTime) + "ms.");
+        }
+        return Property.getDebugLayoutUpdateEnabledValue().equals(result);
+    }
 
     public static boolean isShowProfileGPURendering() throws IOException {
         long startTime = System.currentTimeMillis();
@@ -94,6 +98,14 @@ public class DeveloperSettings {
             Utils.log("isShowProfileGPURendering spends " + (System.currentTimeMillis() - startTime) + "ms.");
         }
         return "visual_bars".equals(result);
+    }
+    public static boolean isLayoutUpdate() throws IOException {
+        long startTime = System.currentTimeMillis();
+        String result = SystemProperties.get(Property.DEBUG_SHOW_DIRTY_REGIONS, "false");
+        if (LOG_ENABLED) {
+            Utils.log("isShowProfileGPURendering spends " + (System.currentTimeMillis() - startTime) + "ms.");
+        }
+        return "true".equals(result);
     }
 
     public static boolean isImmediatelyDestroyActivities(Context context) {
@@ -155,6 +167,15 @@ public class DeveloperSettings {
         pokeSystemProperties();
         return result != null;
     }
+    public static boolean setLayoutUpdateEnable(boolean enabled) throws IOException, InterruptedException {
+        Crashlytics.log(Behaviour.SET_LAYOUT_UPDATE);
+        EasyTracker tracker = EasyTracker.getInstance(Application.getInstance());
+        tracker.send(MapBuilder.createAppView().build());
+        List<String> result = Shell.SU.run(
+                "setprop " + Property.DEBUG_SHOW_DIRTY_REGIONS + " " + (enabled ? "true" : "false"));
+        pokeSystemProperties();
+        return result != null;
+    }
 
     public static boolean setImmediatelyDestroyActivities(Context context, boolean enabled)
             throws IOException, InterruptedException {
@@ -206,6 +227,9 @@ public class DeveloperSettings {
 
     public static boolean toggleImmediatelyDestroyActivity(Context context) throws IOException, InterruptedException {
         return setImmediatelyDestroyActivities(context, !isImmediatelyDestroyActivities(context));
+    }
+    public static boolean toggleLayoutUpdate() throws IOException, InterruptedException {
+        return setLayoutUpdateEnable( !isLayoutUpdate());
     }
 
     public static boolean toggleAdbThroughWifi() throws IOException, InterruptedException {

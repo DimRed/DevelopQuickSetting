@@ -34,7 +34,8 @@ public class PostNotificationTask extends AsyncTask<Void, Void, boolean[]> {
                     DeveloperSettings.isShowOverdrawEnabled(),
                     DeveloperSettings.isShowProfileGPURendering(),
                     DeveloperSettings.isImmediatelyDestroyActivities(mContext),
-                    DeveloperSettings.isAdbThroughWifiEnabled()
+                    DeveloperSettings.isAdbThroughWifiEnabled(),
+                    DeveloperSettings.isLayoutUpdate()
             };
         } catch (IOException e) {
             Crashlytics.logException(e);
@@ -72,7 +73,14 @@ public class PostNotificationTask extends AsyncTask<Void, Void, boolean[]> {
         views.setImageViewResource(R.id.adb_wifi_indicator,
                 results[4] ? R.color.appwidget_indicator_enabled : R.color.appwidget_indicator_disabled);
 
+        views.setImageViewResource(R.id.layout_update_indicator,
+                results[5] ? R.color.appwidget_indicator_enabled : R.color.appwidget_indicator_disabled);
+        views.setImageViewResource(R.id.layout_update_image,
+                results[5] ? R.drawable.ic_layout_update_enabled : R.drawable.ic_layout_update_disabled);
+
         //set widget click listener
+        views.setOnClickPendingIntent(R.id.layout_update, DevelopSettingsService.getPendingIntent(
+                mContext, DevelopSettingsService.ACTION_SET_LAYOUT_UPDATE));
         views.setOnClickPendingIntent(R.id.layout_border, DevelopSettingsService.getPendingIntent(
                 mContext, DevelopSettingsService.ACTION_SET_SHOW_LAYOUT_BORDER));
         views.setOnClickPendingIntent(R.id.overdraw, DevelopSettingsService.getPendingIntent(

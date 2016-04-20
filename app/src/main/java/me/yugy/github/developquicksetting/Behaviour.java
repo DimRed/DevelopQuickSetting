@@ -9,4 +9,6 @@ public class Behaviour {
     public static final String ADB_WIFI = "ADB_WIFI";
     public static final String INSTALL_REBOOT_FAILED = "INSTALL_REBOOT_FAILED";
     public static final String CHECK_ROOT_PERMISSION_FAILED = "CHECK_ROOT_PERMISSION_FAILED";
+    public static final String SET_LAYOUT_UPDATE = "SET_LAYOUT_UPDATE";
+
 }

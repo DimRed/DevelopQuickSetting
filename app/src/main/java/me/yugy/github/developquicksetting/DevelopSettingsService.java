@@ -24,7 +24,8 @@ public class DevelopSettingsService extends IntentService {
             ACTION_SET_PROFILE_GPU_RENDERING, ACTION_SET_IMMEDIATELY_DESTROY_ACTIVITIES,
             ACTION_SET_ADB_THROUGH_WIFI
 //            ,ACTION_SHOW_TOOL_IN_SYSTEM_BAR
-             }
+            ,ACTION_SET_LAYOUT_UPDATE
+    }
     )
     public @interface Action {}
 
@@ -32,6 +33,7 @@ public class DevelopSettingsService extends IntentService {
     public static final int ACTION_SET_DISPLAY_OVERDRAW = 2;
     public static final int ACTION_SET_PROFILE_GPU_RENDERING = 3;
     public static final int ACTION_SET_IMMEDIATELY_DESTROY_ACTIVITIES = 4;
+    public static final int ACTION_SET_LAYOUT_UPDATE = 7;
     public static final int ACTION_SET_ADB_THROUGH_WIFI = 5;
 //    public static final int ACTION_SHOW_TOOL_IN_SYSTEM_BAR = 6;
 
@@ -77,6 +79,9 @@ public class DevelopSettingsService extends IntentService {
                     break;
                 case ACTION_SET_IMMEDIATELY_DESTROY_ACTIVITIES:
                     refreshUIState(DeveloperSettings.toggleImmediatelyDestroyActivity(this));
+                    break;
+                case ACTION_SET_LAYOUT_UPDATE:
+                    refreshUIState(DeveloperSettings.toggleLayoutUpdate());
                     break;
                 case ACTION_SET_ADB_THROUGH_WIFI:
                     refreshUIState(DeveloperSettings.toggleAdbThroughWifi());

@@ -37,5 +37,7 @@
     <string name="show_tool_on_status_bar">show tool on status bar</string>
     <string name="adb_through_wifi_enabled">Adb through wifi enabled</string>
     <string name="boot_check_root_failed_info">Check root permission failed. Please make sure that you have root your device.</string>
+    <string name="show_layout_update">Show Layout Update</string>
+    <string name="key_layout_update">Layout_update</string>
 
 </resources>

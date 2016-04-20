@@ -19,6 +19,33 @@
         android:baselineAligned="false">
 
         <LinearLayout
+            android:id="@+id/layout_update"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@drawable/appwidget_button_left">
+
+            <ImageView
+                android:id="@+id/layout_update_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/ic_layout_update_disabled"
+                />
+
+            <ImageView
+                android:id="@+id/layout_update_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:src="@color/appwidget_indicator_disabled"
+                android:scaleType="fitXY"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/layout_border"
             android:orientation="vertical"
             android:layout_width="0dp"

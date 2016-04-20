@@ -22,6 +22,7 @@ import java.io.IOException;
 public class MainFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener{
 
     private CheckBoxPreference mLayoutBorderPreference;
+    private CheckBoxPreference mLayoutUpdatePreference;
     private CheckBoxPreference mDisplayOverdrawPreference;
     private CheckBoxPreference mProfileGPURenderingPreference;
     private CheckBoxPreference mImmediatelyDestroyActivitiesPreference;
@@ -72,6 +73,7 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
     private void findPreferences() {
         mLayoutBorderPreference = (CheckBoxPreference) findPreference(getString(R.string.key_layout_border));
         mDisplayOverdrawPreference = (CheckBoxPreference) findPreference(getString(R.string.key_display_overdraw));
+        mLayoutUpdatePreference = (CheckBoxPreference) findPreference(getString(R.string.key_layout_update));
         mProfileGPURenderingPreference = (CheckBoxPreference) findPreference(getString(R.string.key_profile_gpu_rendering));
         mImmediatelyDestroyActivitiesPreference = (CheckBoxPreference) findPreference(getString(R.string.key_always_destroy_activities));
         mAdbThroughWifiPreference = (CheckBoxPreference) findPreference(getString(R.string.key_adb_through_wifi));
@@ -101,6 +103,7 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         mImmediatelyDestroyActivitiesPreference.setOnPreferenceChangeListener(null);
         mAdbThroughWifiPreference.setOnPreferenceChangeListener(null);
         mShowToolInSystemBarPreference.setOnPreferenceChangeListener(null);
+        mLayoutUpdatePreference.setOnPreferenceChangeListener(null);
     }
 
     private void setPreferencesListener() {
@@ -110,6 +113,7 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         mImmediatelyDestroyActivitiesPreference.setOnPreferenceChangeListener(this);
         mAdbThroughWifiPreference.setOnPreferenceChangeListener(this);
         mShowToolInSystemBarPreference.setOnPreferenceChangeListener(this);
+        mLayoutUpdatePreference.setOnPreferenceChangeListener(this);
     }
 
     public void updatePreferencesState() {
@@ -126,13 +130,14 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
             if (getActivity() != null) {
                 try {
                     long startTime = System.currentTimeMillis();
-                    boolean[] result = new boolean[6];
+                    boolean[] result = new boolean[7];
                     result[0] = DeveloperSettings.isAdbEnabled(getActivity());
-                    result[1] = DeveloperSettings.isDebugLayoutEnabled();
-                    result[2] = DeveloperSettings.isShowOverdrawEnabled();
-                    result[3] = DeveloperSettings.isShowProfileGPURendering();
-                    result[4] = DeveloperSettings.isImmediatelyDestroyActivities(getActivity());
-                    result[5] = DeveloperSettings.isAdbThroughWifiEnabled();
+                    result[1] = DeveloperSettings.isLayoutUpdateEnabled();
+                    result[2] = DeveloperSettings.isDebugLayoutEnabled();
+                    result[3] = DeveloperSettings.isShowOverdrawEnabled();
+                    result[4] = DeveloperSettings.isShowProfileGPURendering();
+                    result[5] = DeveloperSettings.isImmediatelyDestroyActivities(getActivity());
+                    result[6] = DeveloperSettings.isAdbThroughWifiEnabled();
                     Utils.log("RefreshPreferencesStateTask spends " + (System.currentTimeMillis() - startTime) + "ms in background.");
                     return result;
                 } catch (IOException e) {
@@ -149,11 +154,12 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
             if (getActivity() != null) {
                 if (result != null) {
 //                    setOtherPreferencesEnabled(result[0]);
-                    mLayoutBorderPreference.setChecked(result[1]);
-                    mDisplayOverdrawPreference.setChecked(result[2]);
-                    mProfileGPURenderingPreference.setChecked(result[3]);
-                    mImmediatelyDestroyActivitiesPreference.setChecked(result[4]);
-                    if (result[5]) {
+                    mLayoutUpdatePreference.setChecked(result[1]);
+                    mLayoutBorderPreference.setChecked(result[2]);
+                    mDisplayOverdrawPreference.setChecked(result[3]);
+                    mProfileGPURenderingPreference.setChecked(result[4]);
+                    mImmediatelyDestroyActivitiesPreference.setChecked(result[5]);
+                    if (result[6]) {
                         new RefreshAdbThroughWifiStateTask().execute();
                     } else {
                         mAdbThroughWifiPreference.setChecked(false);
@@ -223,6 +229,9 @@ public class MainFragment extends PreferenceFragment implements Preference.OnPre
         }else  if(preference.equals(mShowToolInSystemBarPreference)){
             handShowOrDismissToolNotification((Boolean) newValue);
             mShowToolInSystemBarPreference.setChecked((Boolean) newValue);
+        } else if(preference.equals(mLayoutUpdatePreference)){
+
+            DevelopSettingsService.newTask(getActivity(), DevelopSettingsService.ACTION_SET_LAYOUT_UPDATE);
         }
         return false;
     }

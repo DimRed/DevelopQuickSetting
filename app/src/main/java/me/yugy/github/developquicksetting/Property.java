@@ -10,6 +10,7 @@ public class Property {
 
     private static final String DEBUG_OVERDRAW_PROPERTY_JB_MR1 = "debug.hwui.show_overdraw";
     private static final String DEBUG_OVERDRAW_PROPERTY_KITKAT = "debug.hwui.overdraw";
+    public  static final String DEBUG_SHOW_DIRTY_REGIONS = "debug.hwui.show_dirty_regions";
 
     public static String getDebugOverdrawPropertyKey() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -19,6 +20,15 @@ public class Property {
         } else {
             return "";
         }
+    }
+
+    public static String getDebugLayoutUpdatePropertyKey() {
+
+        return DEBUG_SHOW_DIRTY_REGIONS;
+    }
+
+    public static String getDebugLayoutUpdateEnabledValue() {
+        return "true";
     }
 
     public static String getDebugOverdrawPropertyEnabledValue() {

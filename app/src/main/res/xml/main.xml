@@ -7,6 +7,11 @@
         >
 
         <CheckBoxPreference
+            android:key="@string/key_layout_update"
+            android:title="@string/show_layout_update"
+            />
+
+        <CheckBoxPreference
             android:key="@string/key_layout_border"
             android:title="@string/show_layout_border"
             />
