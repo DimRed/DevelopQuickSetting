@@ -46,6 +46,7 @@ public class PostNotificationTask extends AsyncTask<Void, Void, boolean[]> {
 
     @Override
     protected void onPostExecute(@NonNull boolean[] results) {
+        Application.getInstance().setDeveloperConf(results);
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.layout_notifycation);
         //update widget state
         views.setImageViewResource(R.id.layout_border_image,

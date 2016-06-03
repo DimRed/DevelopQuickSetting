@@ -11,5 +11,6 @@ public class Conf {
 
     public static final int NOTIFICATION_ID = 523483845;
     public static final int TOOL_NOTIFICATION_ID = 33;
+    public static final long IDE_DURATION=3000l;
 
 }
